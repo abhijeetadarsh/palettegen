@@ -11,10 +11,10 @@ on:
 jobs:
   build:
     # We will run this job on all 3 major OS platforms
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest] # , windows-latest, macos-latest] Removed windows and macos
 
     steps:
       - name: Check out code
@@ -29,7 +29,7 @@ jobs:
 
       # On Linux, we must install the system libraries for headless OpenCV
       - name: Install Linux system dependencies
-        if: matrix.os == 'ubuntu-latest'
+        # if: matrix.os == 'ubuntu-latest' # No longer needed, as we only run on ubuntu
         run: |
           sudo apt-get update
           sudo apt-get install -y libgl1-mesa-glx libglib2.0-0
@@ -124,4 +124,5 @@ jobs:
           # Find all downloaded artifacts and upload them
           # 'gh' is the official GitHub CLI, pre-installed on the runner
           find executables -type f -exec gh release upload ${{ github.ref_name }} {} +
+
 
