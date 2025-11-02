@@ -10,11 +10,10 @@ on:
 
 jobs:
   build:
-    # We will run this job on all 3 major OS platforms
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest] # , windows-latest, macos-latest] Removed windows and macos
+        os: [ubuntu-latest] 
 
     steps:
       - name: Check out code
@@ -24,15 +23,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-
-      # ----- OS-Specific Setup -----
-
-      # On Linux, we must install the system libraries for headless OpenCV
-      - name: Install Linux system dependencies
-        # if: matrix.os == 'ubuntu-latest' # No longer needed, as we only run on ubuntu
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgl1-mesa-glx libglib2.0-0
 
       # ----- Install Python Dependencies -----
 
@@ -47,7 +37,7 @@ jobs:
       # Run PyInstaller to create the single-file executable
       # Assumes your script is named 'palette_gen.py'
       - name: Build executable with PyInstaller
-        run: pyinstaller --onefile --name=palettegen palette_gen.py
+        run: pyinstaller --onefile --name=palettegen main.py
 
       # ----- Rename and Prepare Artifact -----
 
